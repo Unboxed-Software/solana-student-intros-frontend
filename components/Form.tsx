@@ -21,51 +21,7 @@ export const Form: FC = () => {
     }
 
     const handleTransactionSubmit = async (studentIntro: StudentIntro) => {
-        if (!publicKey) {
-            alert('Please connect your wallet!')
-            return
-        }
-
-        const buffer = studentIntro.serialize()
-        const transaction = new web3.Transaction()
-
-        const [pda] = await web3.PublicKey.findProgramAddress(
-            [publicKey.toBuffer()],
-            new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID)
-        )
-
-        const instruction = new web3.TransactionInstruction({
-            keys: [
-                {
-                    pubkey: publicKey,
-                    isSigner: true,
-                    isWritable: false,
-                },
-                {
-                    pubkey: pda,
-                    isSigner: false,
-                    isWritable: true
-                },
-                {
-                    pubkey: web3.SystemProgram.programId,
-                    isSigner: false,
-                    isWritable: false
-                }
-            ],
-            data: buffer,
-            programId: new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID)
-        })
-
-        transaction.add(instruction)
-
-        try {
-            let txid = await sendTransaction(transaction, connection)
-            alert(`Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`)
-            console.log(`Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`)
-        } catch (e) {
-            console.log(JSON.stringify(e))
-            alert(JSON.stringify(e))
-        }
+        console.log(JSON.stringify(studentIntro))
     }
 
     return (
