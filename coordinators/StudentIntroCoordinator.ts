@@ -26,7 +26,11 @@ export class StudentIntroCoordinator {
         )
 
         accounts.sort( (a, b) => {
-            return a.account.data.slice(4, 4 + a.account.data[0]).compare(b.account.data.slice(4, 4 + b.account.data[0]))
+            const lengthA = a.account.data.readUInt32LE(0)
+            const lengthB = b.account.data.readUInt32LE(0)
+            const dataA = a.account.data.slice(4, 4 + lengthA)
+            const dataB = b.account.data.slice(4, 4 + lengthB)
+            return dataA.compare(dataB)
         })
 
         this.accounts = accounts.map(account => account.pubkey)
